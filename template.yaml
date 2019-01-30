@@ -1,0 +1,123 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+    sam-app
+
+    Sample SAM Template for sam-app
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+    Function:
+        Timeout: 3
+    Api:
+        Cors:
+            AllowMethods: "'GET,POST,OPTIONS'"
+            AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+            AllowOrigin: "'*'"
+
+Parameters:
+    Alias:
+        Type: String
+        Default: 'DemoSAM'
+
+Resources:
+
+    PostItemFunction:
+        Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+        Properties:
+            CodeUri: ./Lambda
+            Handler: Lambda1.lambda1_handler
+            Runtime: python3.6
+            Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+                Variables:
+                    PARAM1: VALUE
+            Events:
+                PostEvent:
+                    Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+                    Properties:
+                        Path: /postItem
+                        Method: post
+            Policies: arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+            MemorySize: 128
+            Timeout: 300
+            AutoPublishAlias: !Ref Alias
+
+                        
+    GetItemFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: ./Lambda
+            Handler: Lambda2.lambda2_handler
+            Runtime: python3.6
+            Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+                Variables:
+                    PARAM1: VALUE
+            Events:
+                GetEvent:
+                    Type: Api
+                    Properties:
+                        Path: /getItem
+                        Method: get
+            Policies: arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+            MemorySize: 128
+            Timeout: 300
+            AutoPublishAlias: !Ref Alias
+    
+    DetectItemFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: ./Lambda
+            Handler: Lambda3.lambda3_handler
+            Runtime: python3.6
+            Events:
+                DetectEvent:
+                    Type: DynamoDB
+                    Properties:
+                        Stream:
+                            !GetAtt DynamoDBTable.StreamArn
+                        StartingPosition: TRIM_HORIZON
+                        BatchSize: 10
+            Policies: arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+            AutoPublishAlias: !Ref Alias
+    
+    DynamoDBTable:
+        Type: 'AWS::DynamoDB::Table'
+        Properties:
+            TableName: 'user'
+            StreamSpecification:
+                StreamViewType: NEW_AND_OLD_IMAGES
+            ProvisionedThroughput:
+                WriteCapacityUnits: 5
+                ReadCapacityUnits: 5
+            AttributeDefinitions:
+                - AttributeName: id
+                  AttributeType: S
+            KeySchema:
+                - AttributeName: id
+                  KeyType: HASH
+                    
+Outputs:
+    
+    GetItemApi:
+        Description: "API Gateway endpoint URL for Prod statge for Lambda2 Function"
+        Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/getItem/"
+    
+    GetItemFunction:
+        Description: "Get Item Lambda Function ARN"
+        Value: !GetAtt GetItemFunction.Arn
+    
+    GetItemFunctionIamRole:
+        Description: "Implicit IAM Role created for Get Item Function"
+        Value: !GetAtt GetItemFunction.Arn
+        
+    PostItemApi:
+      Description: "API Gateway endpoint URL for Prod stage for Lambda1 Function"
+      Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/postItem/"
+        
+    PostItemFunction:
+      Description: "Post Item Lambda Function ARN"
+      Value: !GetAtt PostItemFunction.Arn
+
+    PostItemFunctionIamRole:
+      Description: "Implicit IAM Role created for Post Item Function"
+      Value: !GetAtt PostItemFunction.Arn
