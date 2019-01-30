@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Lambda SAM Lab</title>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+	 crossorigin="anonymous">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+	 crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+	 crossorigin="anonymous"></script>
+	<style>
+		body{
+			margin-top: 5%;
+			margin-bottom: 5%;
+			margin-left: 10%;
+			margin-right: 10%;
+		}
+	</style>
+</head>
+
+<body>
+
+	<form>
+		<div class="form-group">
+			<label for="exampleUserName">User Name</label>
+			<input type="text" class="form-control" id="username" placeholder="User name">
+		</div>
+
+		<div class="form-group">
+			<label for="exampleAddress">Address</label>
+			<input type="text" class="form-control" id="address" placeholder="Address">
+		</div>
+
+		<div class="form-group">
+			<label for="examplePhone">Phone number</label>
+			<input type="text" class="form-control" id="phone" placeholder="Phone number">
+		</div>
+
+		<button type="button" class="btn btn-primary" id="postItem">Submit</button>
+	</form>
+
+	<hr />
+	<button type="button" class="btn btn-success" id="getItem">Retrieve</button>
+
+	<div id="tableDiv">
+	</div>
+
+</body>
+
+</html>
+<script type="text/javascript">
+	$('#postItem').click(() => {
+		var username = $.trim($("#username").val());
+		var address = $.trim($("#address").val());
+		var phone = $.trim($("#phone").val());
+		//console.log(username, address, phone)
+		if (username && address && phone) {
+			var obj = {
+				username: username,
+				address: address,
+				phone: phone
+			};
+			var objJson = JSON.stringify(obj);
+			$.post('<ENDPOINT_FOR_POST_ITEM>', objJson, (data, status) => {
+				//console.log(data);
+				alert('Success!');
+			});
+		}
+		else {
+			alert('Can not empty...');
+		}
+	});
+
+	$('#getItem').click(() => {
+		$.get('ENDPOINT_FOR_GET_ITEM', (resp, status) => {
+			var table = "<br />";
+			table += "<table class='table'>";
+			table += "<thead class='thead-dark'><tr>";
+			table += "<th scope='col'>UserName</th>";
+			table += "<th scope='col'>Address</th>";
+			table += "<th scope='col'>Phone</th>";
+			table += "</tr></thead>";
+			table += "<tbody>";
+			//console.log(resp);
+			var data = JSON.parse(resp.data);
+			for (var i = 0; i < data.length; i++) {
+				table += "<tr>";
+				table += "<th scope='row'>" + data[i].username.S + "</th>";
+				table += "<th scope='row'>" + data[i].address.S + "</th>";
+				table += "<th scope='row'>" + data[i].phone.S + "</th>";
+				table += "</tr>";
+			};
+			table += "</tbody></table>"
+			$('#tableDiv').empty();
+			$('#tableDiv').append(table);
+		});
+	});
+</script>

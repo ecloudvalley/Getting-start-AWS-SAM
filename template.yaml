@@ -63,23 +63,6 @@ Resources:
             Timeout: 300
             AutoPublishAlias: !Ref Alias
     
-    DetectItemFunction:
-        Type: AWS::Serverless::Function
-        Properties:
-            CodeUri: ./Lambda
-            Handler: Lambda3.lambda3_handler
-            Runtime: python3.6
-            Events:
-                DetectEvent:
-                    Type: DynamoDB
-                    Properties:
-                        Stream:
-                            !GetAtt DynamoDBTable.StreamArn
-                        StartingPosition: TRIM_HORIZON
-                        BatchSize: 10
-            Policies: arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
-            AutoPublishAlias: !Ref Alias
-    
     DynamoDBTable:
         Type: 'AWS::DynamoDB::Table'
         Properties:
