@@ -20,18 +20,20 @@ In this lab, you will use AWS Serverless Application Model to build a simple se
 
 ## **Step by Step**
 
+In the following steps, you will configure the environment required for development, deploy the application and finally test it!
+
 ### **Create Cloud9 environment**
 
-In this section, we need to create a **Cloud9** environment.
+We need a **Cloud9** environment to develop our application.
 
-- On the service menu, choose **Cloud9**, Choose **Create environment**.
+- On the service menu, choose **Cloud9**. Choose **Create environment**.
 - On the **Name environment** page, type a **Name** for your environment. Choose **Next step**.
 
 <p align="center">
     <img src="images/003-SAM-CreateCloud9Environment-01.png" width="70%" height="70%">
 </p>
 
-- On the **Configure settings** page: <br />
+- On the **Configure settings** page: (use the default settings)<br />
     1. **Environment type**: Choose **Create a new instance for environment (EC2)**.
     2. **Instance Type**: Choose **t2.micro (1 GiB RAM + 1 vCPU)**.
     3. **Cost-saving setting**: Choose **Cost-saving setting**.
@@ -46,50 +48,65 @@ In this section, we need to create a **Cloud9** environment.
 
 - Choose **Next Step**.
 - On the **Review** page, choose **Create environment**.
-- The environment will be creating and setting, wait for a minute.
+- The environment will be created, set and finally connected. Please wait for a minute.
 
-### **Initial lab material**
+### **Build your web serverless application and deploy it**
 
-In this section, you will use SAM to build a serverless web application.
+In this section, you will use SAM to build a serverless web application by **AWS SAM CLI**.
 
-- In the terminal, which opened in the previous step, type the following command to clone the lab source.
+- In **Cloud9** terminal that was opened from the previous step, type the following command to clone the lab source and change to a directory specified by a path name.
 
 ```
 $ git clone https://gitlab.com/ecloudture/blog/aws-serverless-application-model.git
 $ cd ~/environment/aws-serverless-application-model
 ```
 
-- Install the dependencies by running the following sam command.
+- Type the following command to view the content of the file **template.yaml**. We use the yaml syntax to define our resources
+ needed to execute our application. You can also use json syntax to define.
+
+```
+$ cat template.yaml
+```
+
+- In this code, we define two Lambda Function **PostItemFunction** and **GetItemFunction**. In addition, we also defined a **DynamoDB table** to store our user information.
+
+- The following command create a subdirectory that contains the application code and dependencies. The dependencies will be installed.
 
 ```
 $ sam build --use-container
 ```
 
-- In the following command, we create an S3 bucket to save the deployment package. Please replace "<YOUR_BUCKET_NAME>" with unique name.
+> Note: The dependencies are described in the **~/environment/aws-serverless-application-model/Lambda/requirement.txt** file.
+
+- In order to store the packages needed for deployment and host our static website, we create a **S3 Bucket**. Type the following command in terminal. Please replace "<YOUR_BUCKET_NAME>" with unique name.
 
 ```
 aws s3 mb s3://<YOUR_BUCKET_NAME>
 ```
 
-- In the following command, we create the deployment package for deploy our web application. Please replace "<YOUR_BUCKET_NAME>" with your bucket name which created in the previous step. And then the file **package.yaml** will be created under the "aws-serverless-application-model" folder.
+- In the following command, we create the deployment package needed for deploy our web application. Type the command in terminal, then the file **package.yaml** will be created under the "aws-serverless-application-model" folder. Please replace "<YOUR_BUCKET_NAME>" with your bucket name which created in the previous step.
 
 ```
 $ sam package --output-template-file package.yaml --s3-bucket <YOUR_BUCKET_NAME>
 ```
 
-- In the following command, replace "<YOUR_STACK_NAME>" with your stack name and run it to deploy all of resources that you defined in the template.
+- Now, we use the **deploy** command. Type the command below, **Cloudformation** will create the resources as defined in the template, and group them in an entity called a **stack** in Clouformation. Please replace "<YOUR_STACK_NAME>" with your stack name, you can name it yourself.
 
 ```
 $ sam deploy --template-file package.yaml --stack-name <YOUR_STACK_NAME> --capabilities CAPABILITY_IAM --region us-east-1
 ```
 
-- Please wait for a while, all of resources are being create depending on the content defined in the template.
+- Please wait for a while. All of resources are being created, then you will see the message of "Successfully created/updated stack" as below.
 
-### **Access Website**
+<p align="center">
+    <img src="images/019-SAM-DeploySuccess.png" width="70%" height="70%">
+</p>
 
-In this section, you will access your web application by **index.html** which hosted in your **S3 Bucket**.
+### **Integrate with static website**
 
-- On the service menu, choose **CloudFormation**. Type your stack name in the filter. And then choose your stack.
+In this section, you will create a static website on **S3** and integrate the API endpoint with it.
+
+- On the service menu, choose **CloudFormation**. Type your stack name in the filter, then choose your stack.
 
 <p align="center">
     <img src="images/006-SAM-CloudFormationFilter.png" width="70%" height="70%">
@@ -131,18 +148,18 @@ $ aws s3 cp ~/environment/aws-serverless-application-model/index.html s3://<YOUR
     <img src="images/011-SAM-S3PublicAccess-01.png" width="70%" height="70%">
 </p>
 
-- In the pop-up window, choose **Read object**, then select **Save**.
+- In the pop-up window, choose **Read object**. Select **Save**.
 
 <p align="center">
     <img src="images/012-SAM-S3PublicAccess-02.png" width="50%" height="50%">
 </p>
 
-- Now, **index.html** can be publicly accessed. The next step, we will enable static web hosting through **S3**.
+- Now, **index.html** can be publicly accessed. The next step, we will enable static web hosting.
 
 - Reture to the previous page.
 
 <p align="center">
-    <img src="images/013-SAM-S3WebHosting-02.png
+    <img src="images/010-SAM-S3WebHosting-01.png
 " width="70%" height="70%">
 </p>
 
@@ -155,7 +172,7 @@ $ aws s3 cp ~/environment/aws-serverless-application-model/index.html s3://<YOUR
 - Type **index.html** for index document field, then choose **Save**.
 
 <p align="center">
-    <img src="images/010-SAM-S3WebHosting-01.png
+    <img src="images/013-SAM-S3WebHosting-02.png
 " width="70%" height="70%">
 </p>
 
@@ -194,9 +211,9 @@ In this section, you will create a Lambda funtion. When the data is writed to Dy
 
 ```
 
-- In **Cloud9**, choose **template.yaml** under the folder **aws-serverkess-application-model**.
+- In **Cloud9**, open **template.yaml** under the folder **aws-serverkess-application-model**.
 
-- Paste the code into **template.yaml**, behind the **GetItemFunction** section as below:
+- Paste the code into **template.yaml** behind the **GetItemFunction** section as below:
 
 <p align="center">
     <img src="images/015-SAM-TemplateSet.png
@@ -209,7 +226,7 @@ In this section, you will create a Lambda funtion. When the data is writed to Dy
 
 ```
 $ cd ~/environment/aws-serverless-application-model/Lambda
-$ touch Lambda.py
+$ touch Lambda3.py
 ```
 
 - Open the file **Lambda3.py**, paste the following code. 
@@ -221,22 +238,39 @@ def lambda3_handler(event, context):
 
 - Save file.
 
-### Deploy your web application again
+### **Deploy your web application again**
 
 In this section, you will deploy your web application again due to the project has been modified.
 
-- The following command, you intall the dependencies and create deployment package then deploy all of resources that you defined in the template. Please replace <YOUR_BUCKET_NAME> and <YOUR_STACK_NAME>.
+- The following command create a subdirectory that contains the application code and dependencies. The dependencies will be installed.
 
 ```
 $ cd ~/environment/aws-serverless-application-model
 $ sam build --use-container
+```
+
+- The following command, you can test your Lambda function locally. Type at terminal, then you will see the execution result of Lambda function as below.
+
+```
+$ sam local invoke DetectItemFunction --event event.json
+```
+
+<p align="center">
+    <img src="images/020-SAM-LambdaInvokeLocally.png
+" width="70%" height="70%">
+
+- The following command, create the deployment package then deploy all of resources that you defined in the template. Please replace <YOUR_BUCKET_NAME> and <YOUR_STACK_NAME>.
+
+```
 $ sam package --output-template-file package.yaml --s3-bucket <YOUR_BUCKET_NAME>
 $ sam deploy --template-file package.yaml --stack-name <YOUR_STACK_NAME> --capabilities CAPABILITY_IAM --region us-east-1
 ```
 
-- Wait for a while, then you will see the "Successfully" message.
 
-### Test your web application
+
+- Wait for a while, then you will see the "Successfully created/updated stack" message.
+
+### **Test your web application**
 
 - Reload the web page and enter the values in those fields to test your website.
 
@@ -248,12 +282,26 @@ $ sam deploy --template-file package.yaml --stack-name <YOUR_STACK_NAME> --capab
 
 - In the filter, type **DetectItemFunction** and choose the result.
 
-- Choose **Monitoring**, then select **View logs in CloudWatch**.
+- Choose **Monitoring** tab, then select **View logs in CloudWatch**.
 
 - In the new tab, choose log streams.
 
-- You will see the logs written by Lambda3.
+- Because the new data was writted in **DynamoDB**, you will see the logs "hello word" which created by **Lambda3**.
 
 <p align="center">
     <img src="images/018-SAM-Lambda3Logs.png
 " width="70%" height="70%">
+
+## **Conclusion**
+
+Congratulations! Now you've learned: <br />
+
+1. Create a **Cloud9** environment.
+
+2. Test your **Lambda Function** locally.
+
+3. Use **AWS SAM CLI** to build and deploy all of the resources that you defined in the template to **AWS Cloud**.
+
+4. Create a static website hosting through **S3**.
+
+5. Integrate API Gateway endpoint with static website.
