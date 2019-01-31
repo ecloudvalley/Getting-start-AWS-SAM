@@ -13,7 +13,7 @@ AWS SAM consists of the following components:
 
 ## **Scenario**
 
-In this lab, you will use AWS Serverless Application Model to build a simple serverless web application. This application can read and write item to DynamoDB table. When the data write to DynamoDB, it will trigger Lambda to write the record in CloudWatch.
+In this lab, you will use AWS Serverless Application Model to build a simple serverless web application. This application can read and write item to DynamoDB table. When the data is written to DynamoDB, it will trigger Lambda function to write logs in CloudWatch.
 <p align="center">
     <img src="images/001-SAM-Architecture.jpg" width="70%" height="70%">
 </p>
@@ -68,7 +68,7 @@ $ cd ~/environment/aws-serverless-application-model
 $ cat template.yaml
 ```
 
-- In this code, we define two Lambda Function **PostItemFunction** and **GetItemFunction**. In addition, we also defined a **DynamoDB table** to store our user information.
+- In this code, we define two Lambda Function **PostItemFunction** and **GetItemFunction**. In addition, we also defined a **DynamoDB table** to store our user's information.
 
 - The following command create a subdirectory that contains the application code and dependencies. The dependencies will be installed.
 
@@ -90,13 +90,13 @@ aws s3 mb s3://<YOUR_BUCKET_NAME>
 $ sam package --output-template-file package.yaml --s3-bucket <YOUR_BUCKET_NAME>
 ```
 
-- Now, we use the **deploy** command. Type the command below, **Cloudformation** will create the resources as defined in the template, and group them in an entity called a **stack** in Clouformation. Please replace "<YOUR_STACK_NAME>" with your stack name, you can name it yourself.
+- Now, we use the **deploy** command. Type the command below, **Cloudformation** will create the resources as defined in the template, and group them in an entity called a **stack** in **Clouformation**. Please replace "<YOUR_STACK_NAME>" with your stack name, you can name it yourself.
 
 ```
 $ sam deploy --template-file package.yaml --stack-name <YOUR_STACK_NAME> --capabilities CAPABILITY_IAM --region us-east-1
 ```
 
-- Please wait for a while. All of resources are being created, then you will see the message of "Successfully created/updated stack" as below.
+- Please wait for a while. All of the resources are being created, then you will see the message of "Successfully created/updated stack" as below.
 
 <p align="center">
     <img src="images/019-SAM-DeploySuccess.png" width="70%" height="70%">
@@ -183,11 +183,11 @@ $ aws s3 cp ~/environment/aws-serverless-application-model/index.html s3://<YOUR
 " width="70%" height="70%">
 </p>
 
-- Type in these fileds to test your web application.
+- Type values in those fileds to test your web application.
 
 ### **Create new Lambda function**
 
-In this section, you will create a Lambda funtion. When the data is writed to DynamoDB through your website, this Lambda will be triggered to write the logs to **CloudWatch**.
+In this section, you will create a Lambda funtion. When the data is written to DynamoDB through your website, this Lambda will be triggered to write the logs to **CloudWatch**.
 
 - Copy the following code. This code set the parameter configuration required to create Lambda function and capture the table activity with **DynamoDB** stream.
 
@@ -280,13 +280,13 @@ $ sam deploy --template-file package.yaml --stack-name <YOUR_STACK_NAME> --capab
 
 - On the service menu, choose **Lambda**.
 
-- In the filter, type **DetectItemFunction** and choose the result.
+- In the filter, type **DetectItemFunction** and choose your lambda function.
 
 - Choose **Monitoring** tab, then select **View logs in CloudWatch**.
 
 - In the new tab, choose log streams.
 
-- Because the new data was writted in **DynamoDB**, you will see the logs "hello word" which created by **Lambda3**.
+- Because the new data was written in **DynamoDB**, you will see the logs "hello word" which created by **Lambda3**.
 
 <p align="center">
     <img src="images/018-SAM-Lambda3Logs.png
