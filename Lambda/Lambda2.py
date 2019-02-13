@@ -6,8 +6,7 @@ def lambda2_handler(event, context):
     resp = db_client.scan(
         TableName = '<YOUR_TABLE_NAME>'
     )
-    print(resp)
-    print('hello')
+
     return {
         'statusCode': 200,
         "headers": {

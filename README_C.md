@@ -100,6 +100,8 @@ $ cat template.yaml
     <img src="images/023-SAM-ChangeTableName-03.png" width="70%" height="70%">
     </p>
 
+- 請記得儲存上述修改過的檔案。
+
 ### **建置與部署**
 
 在這個章節中，您將使用**AWS SAM**建立網頁應用程式並且透過**AWS SAM CLI**部署至**AWS**平台。
@@ -136,7 +138,7 @@ $ sam deploy --template-file package.yaml --stack-name <YOUR_STACK_NAME> --capab
 
 > 由**CloudFormation**建立的資源集合被稱為**stack**。
 
-- 請等待約2分鐘，**Cloudformation**正在建立應用程式所需的資源。建立完成後，您將會看到訊息"Successfully created/updated stack"，如下圖所示：
+- 請稍待片刻，**Cloudformation**正在建立應用程式所需的資源。建立完成後，您將會看到訊息"Successfully created/updated stack"，如下圖所示：
 
 <p align="center">
     <img src="images/019-SAM-DeploySuccess.png" width="70%" height="70%">
@@ -167,6 +169,8 @@ $ sam deploy --template-file package.yaml --stack-name <YOUR_STACK_NAME> --capab
 <p align="center">
     <img src="images/008-SAM-PastePost&GetUrL.png" width="70%" height="70%">
 </p>
+
+- 儲存檔案**index.html**
 
 - 於**Cloud9**的終端機上，請取代下列指令中的"<YOUR_BUCKET_NAME>"為自己的**Bucket**名字，並輸入指令至終端機：
 
