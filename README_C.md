@@ -17,7 +17,7 @@ Template specification提供簡潔的語法定義無伺服器應用程式所使
 
 ## **情境**
 
-在本實驗中，您將使用**AWS SAM**建立無伺服器的網頁應用程式。以**Amazon Cloud9**作為開發環境，透過**AWS SAM template specification**定義應用程式所需的資源，最後使用**AWS SAM CLI**測試、部署應用程式。該網頁應用程式可將資料寫入**DynamoDB**的資料表並從中讀取資料顯示於網頁。
+在本實驗中，您將使用**AWS SAM**建立無伺服器的網頁應用程式。以[**Amazon Cloud9**](https://aws.amazon.com/tw/cloud9/)作為開發環境，透過**AWS SAM template specification**定義應用程式所需的資源，最後使用**AWS SAM CLI**測試、部署應用程式。該網頁應用程式可將資料寫入**DynamoDB**的資料表並從中讀取資料顯示於網頁。
 
 <p align="center">
     <img src="images/001-SAM-Architecture.jpg" width="70%" height="70%">
