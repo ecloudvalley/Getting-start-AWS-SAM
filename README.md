@@ -2,18 +2,19 @@
 
 ## **Overview**
 
-The AWS Serverless Application Model (AWS SAM) is an open-source framework that you can use to build serverless applications on AWS.
+Serverless architecture is the way to build and run application without managing the infrastructure that enable you to build applications with increased agility and lower total cost of ownership. This reduced overhead lets developers reclaim time and energy that can be spent on developing great products which scale and that are reliable.
 
-A serverless application is a combination of Lambda functions, event sources, and other resources that work together to perform tasks. A serverless application is more than just a Lambda function-it can include additional resources such as APIs, databases, and event source mappings.
+A serverless application is a combination of Lambda functions, event sources, and other resources that work together to perform tasks. **AWS Serverless Application Model** (AWS SAM) is an open-source framework that you can use to build serverless applications on AWS.
 
-AWS SAM consists of the following components:
+**AWS SAM** consists of the following components:
 
-1. AWS SAM template specification: Specification provides a simple and clean syntax to describe the functions, APIs, permissions, configuration, and events that make up a serverless application.You use an AWS SAM template file to operate on a single, deployable, versioned entity that's your serverless application.
-2. AWS SAM command line interface (AWS SAM CLI): You use this tool to build serverless applications that are defined by AWS SAM templates. The CLI provides commands that enable you to verify that AWS SAM template files are written according to the specification, invoke Lambda functions locally, step-through debug Lambda functions, package and deploy serverless applications to the AWS Cloud, and so on.
+1. **AWS SAM template specification**: <br />Specification provides a simple and clean syntax to describe the functions, APIs, permissions, configuration, and events that make up a serverless application. You use an AWS SAM template file to operate on a single, deployable, versioned entity that's your serverless application.
+2. **AWS SAM command line interface**(AWS SAM CLI):<br /> You use this tool to build serverless applications that are defined by AWS SAM templates. The CLI provides commands that enable you to verify that AWS SAM template files are written according to the specification, invoke Lambda functions locally, step-through debug Lambda functions, package and deploy serverless applications to the AWS Cloud, and so on.
 
 ## **Scenario**
 
-In this lab, you will use AWS Serverless Application Model to build a simple serverless web application. This application can read and write item to DynamoDB table. When the data is written to DynamoDB, it will trigger Lambda function to write logs in CloudWatch.
+In this lab, you will use **AWS SAM** to build a simple serverless web application. With Amazon **Cloud9** as a development environment, define the resources required by application through AWS SAM template specification. Finally, deploy and test your application using **AWS SAM CLI**. This application can write data to **DynamoDB** table and read the data from it to the web page.
+
 <p align="center">
     <img src="images/001-SAM-Architecture.jpg" width="70%" height="70%">
 </p>
@@ -50,25 +51,55 @@ We need a **Cloud9** environment to develop our application.
 - On the **Review** page, choose **Create environment**.
 - The environment will be created, set and finally connected. Please wait for a minute.
 
-### **Build your web serverless application and deploy it**
+### **Setting up**
 
-In this section, you will use SAM to build a serverless web application by **AWS SAM CLI**.
+We clone the source code and modify it.
 
-- In **Cloud9** terminal that was opened from the previous step, type the following command to clone the lab source and change to a directory specified by a path name.
+- In **Cloud9** terminal that was opened from the previous step, type the following command to clone the lab source.
 
 ```
 $ git clone https://gitlab.com/ecloudture/blog/aws-serverless-application-model.git
-$ cd ~/environment/aws-serverless-application-model
 ```
 
 - Type the following command to view the content of the file **template.yaml**. We use the yaml syntax to define our resources
- needed to execute our application. You can also use json syntax to define.
+ needed to execute our application. You can also use json syntax to define it.
 
 ```
+$ cd ~/environment/aws-serverless-application-model
 $ cat template.yaml
 ```
 
-- In this code, we define two Lambda Function **PostItemFunction** and **GetItemFunction**. In addition, we also defined a **DynamoDB table** to store our user's information.
+> In this code, we define two Lambda Function **PostItemFunction** and **GetItemFunction**. In addition, we also defined a **DynamoDB table** to store our user's information.
+
+- Now, we will change the table name which defined in the code.
+
+- Open the file **Lambda1.py** and **Lambda2.py** which under the path **serverless-application-model/Lambda/**.
+
+- Open the file **template.yaml** which under the folder **serverless-application-model**.
+
+- Replace the string "<YOUR_TABLE_NAME>" with your table name, you can name it by yourself as blow:
+
+    - Lambda1.py
+
+    <p align="center">
+    <img src="images/021-SAM-ChangeTableName-01.png" width="70%" height="70%">
+    </p>
+
+    - Lambda2.py
+
+    <p align="center">
+    <img src="images/022-SAM-ChangeTableName-02.png" width="70%" height="70%">
+    </p>
+
+    - template.yaml
+
+    <p align="center">
+    <img src="images/023-SAM-ChangeTableName-03.png" width="70%" height="70%">
+    </p>
+
+### **Build and deploy**
+
+You will use SAM to build a serverless web application by **AWS SAM CLI**.
 
 - The following command create a subdirectory that contains the application code and dependencies. The dependencies will be installed.
 
@@ -78,23 +109,29 @@ $ sam build --use-container
 
 > Note: The dependencies are described in the **~/environment/aws-serverless-application-model/Lambda/requirement.txt** file.
 
-- In order to store the packages needed for deployment and host our static website, we create a **S3 Bucket**. Type the following command in terminal. Please replace "<YOUR_BUCKET_NAME>" with unique name.
+- Type the following command in terminal to create **S3 Bucket**. Please replace "<YOUR_BUCKET_NAME>" with unique name.
 
 ```
 aws s3 mb s3://<YOUR_BUCKET_NAME>
 ```
 
-- In the following command, we create the deployment package needed for deploy our web application. Type the command in terminal, then the file **package.yaml** will be created under the "aws-serverless-application-model" folder. Please replace "<YOUR_BUCKET_NAME>" with your bucket name which created in the previous step.
+> In order to store the packages needed for deployment and host our static website, we create a **S3 Bucket**. 
+
+- Type the command in terminal, then the file **package.yaml** will be created under the "aws-serverless-application-model" folder. Please replace "<YOUR_BUCKET_NAME>" with your bucket name which created in the previous step.
 
 ```
 $ sam package --output-template-file package.yaml --s3-bucket <YOUR_BUCKET_NAME>
 ```
 
-- Now, we use the **deploy** command. Type the command below, **Cloudformation** will create the resources as defined in the template, and group them in an entity called a **stack** in **Clouformation**. Please replace "<YOUR_STACK_NAME>" with your stack name, you can name it yourself.
+> We create the deployment package to **S3** which needed for deploy our web application.
+
+- Now, we use the **deploy** command. Type the command below. Please replace "<YOUR_STACK_NAME>" with your stack name, you can name it yourself.
 
 ```
 $ sam deploy --template-file package.yaml --stack-name <YOUR_STACK_NAME> --capabilities CAPABILITY_IAM --region us-east-1
 ```
+
+> **Cloudformation** will create the resources as defined in the template, and group them in an entity called a stack in **Clouformation**.
 
 - Please wait for a while. All of the resources are being created, then you will see the message of "Successfully created/updated stack" as below.
 
@@ -104,7 +141,7 @@ $ sam deploy --template-file package.yaml --stack-name <YOUR_STACK_NAME> --capab
 
 ### **Integrate with static website**
 
-In this section, you will create a static website on **S3** and integrate the API endpoint with it.
+You will create a static website on **S3** and integrate the API endpoint with it.
 
 - On the service menu, choose **CloudFormation**. Type your stack name in the filter, then choose your stack.
 
@@ -128,11 +165,17 @@ In this section, you will create a static website on **S3** and integrate the AP
     <img src="images/008-SAM-PastePost&GetUrL.png" width="70%" height="70%">
 </p>
 
-- In the Cloud9 terminal, type the following command. The command copy the file to **S3 Bucket**. Please replace "<YOUR_BUCKET_NAME>" with your bucket name which created in the previous step.
+- In the Cloud9 terminal, type the following command. Please replace "<YOUR_BUCKET_NAME>" with your bucket name which created in the previous step.
 
 ```
 $ aws s3 cp ~/environment/aws-serverless-application-model/index.html s3://<YOUR_BUCKET_NAME>
 ```
+
+> The command copy the file **index.html** to **S3 Bucket**.
+
+## **Build static web hosting**
+
+You will setup static web hosting in **S3**.
 
 - On the service menu, choose **S3**. Type your bucket name in the field of **Search for buckets**, then choose your bucket.
 
@@ -167,14 +210,16 @@ $ aws s3 cp ~/environment/aws-serverless-application-model/index.html s3://<YOUR
 
 - Choose **Static web hosting**, then select **Use this bucket to host a website**.
 
-- Copy the endpoint on the top of window to the textbook.
-
-- Type **index.html** for index document field, then choose **Save**.
+- Type **index.html** for **Index document** field.
 
 <p align="center">
     <img src="images/013-SAM-S3WebHosting-02.png
 " width="70%" height="70%">
 </p>
+
+- Copy the **endpoint** on the top of window to the textbook.
+
+- Choose **Save**.
 
 - At last, paste the endpoint to your browser. You will see the website as bellow:
 
@@ -183,125 +228,29 @@ $ aws s3 cp ~/environment/aws-serverless-application-model/index.html s3://<YOUR
 " width="70%" height="70%">
 </p>
 
-- Type values in those fileds to test your web application.
-
-### **Create new Lambda function**
-
-In this section, you will create a Lambda funtion. When the data is written to DynamoDB through your website, this Lambda will be triggered to write the logs to **CloudWatch**.
-
-- Copy the following code. This code set the parameter configuration required to create Lambda function and capture the table activity with **DynamoDB** stream.
-
-```
-    DetectItemFunction:
-        Type: AWS::Serverless::Function
-        Properties:
-            CodeUri: ./Lambda
-            Handler: Lambda3.lambda3_handler
-            Runtime: python3.6
-            Events:
-                DetectEvent:
-                    Type: DynamoDB
-                    Properties:
-                        Stream:
-                            !GetAtt DynamoDBTable.StreamArn
-                        StartingPosition: TRIM_HORIZON
-                        BatchSize: 10
-            Policies: arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
-            AutoPublishAlias: !Ref Alias
-
-```
-
-- In **Cloud9**, open **template.yaml** under the folder **aws-serverkess-application-model**.
-
-- Paste the code into **template.yaml** behind the **GetItemFunction** section as below:
+- Now, you can type data in the fields of **User Name**, **Address**, **Phone** and press the button **"Submit"**. The data will be written to **DynamoDB** table. Press the button **"Retrieve"** to list all the data from **DynamoDB**.
 
 <p align="center">
-    <img src="images/015-SAM-TemplateSet.png
+    <img src="images/024-SAM-FinalResult.png
 " width="70%" height="70%">
 </p>
-
-- Save file.
-
-- In the following command, we have added a python file to write the code in Lambda function.
-
-```
-$ cd ~/environment/aws-serverless-application-model/Lambda
-$ touch Lambda3.py
-```
-
-- Open the file **Lambda3.py**, paste the following code. 
-
-```
-def lambda3_handler(event, context):
-    print('hello world')
-```
-
-- Save file.
-
-### **Deploy your web application again**
-
-In this section, you will deploy your web application again due to the project has been modified.
-
-- The following command create a subdirectory that contains the application code and dependencies. The dependencies will be installed.
-
-```
-$ cd ~/environment/aws-serverless-application-model
-$ sam build --use-container
-```
-
-- The following command, you can test your Lambda function locally. Type at terminal, then you will see the execution result of Lambda function as below.
-
-```
-$ sam local invoke DetectItemFunction --event event.json
-```
-
-<p align="center">
-    <img src="images/020-SAM-LambdaInvokeLocally.png
-" width="70%" height="70%">
-
-- The following command, create the deployment package then deploy all of resources that you defined in the template. Please replace <YOUR_BUCKET_NAME> and <YOUR_STACK_NAME>.
-
-```
-$ sam package --output-template-file package.yaml --s3-bucket <YOUR_BUCKET_NAME>
-$ sam deploy --template-file package.yaml --stack-name <YOUR_STACK_NAME> --capabilities CAPABILITY_IAM --region us-east-1
-```
-
-
-
-- Wait for a while, then you will see the "Successfully created/updated stack" message.
-
-### **Test your web application**
-
-- Reload the web page and enter the values in those fields to test your website.
-
-<p align="center">
-    <img src="images/017-SAM-Website.png
-" width="70%" height="70%">
-
-- On the service menu, choose **Lambda**.
-
-- In the filter, type **DetectItemFunction** and choose your lambda function.
-
-- Choose **Monitoring** tab, then select **View logs in CloudWatch**.
-
-- In the new tab, choose log streams.
-
-- Because the new data was written in **DynamoDB**, you will see the logs "hello word" which created by **Lambda3**.
-
-<p align="center">
-    <img src="images/018-SAM-Lambda3Logs.png
-" width="70%" height="70%">
 
 ## **Conclusion**
 
 Congratulations! Now you've learned: <br />
 
-1. Create a **Cloud9** environment.
+1. Use **Cloud9** to create a development environment.
 
-2. Test your **Lambda Function** locally.
+2. Use **AWS SAM CLI** to build all the packages needed to deploy.
 
-3. Use **AWS SAM CLI** to build and deploy all of the resources that you defined in the template to **AWS Cloud**.
+3. Deploy your application to **AWS Cloud** using command.
 
-4. Create a static website hosting through **S3**.
+4. Integrate **endpoint** with web page and create a static website hosting through **S3**.
 
-5. Integrate API Gateway endpoint with static website.
+## **Clean up**
+
+1. Delete your environment in **Cloud9**.
+
+2. In **CloudFormation**, choose your stackm and then delete it.
+
+3. In **S3**, delete your bucket.
