@@ -8,7 +8,7 @@ def lambda1_handler(event, context):
     data = ast.literal_eval(event['body'])
     
     db_client.put_item(
-        TableName = 'user',
+        TableName = '<YOUR_TABLE_NAME>',
         Item = {
             "id": {'S':str(datetime.datetime.now())},
             "username": { 'S':data['username']},

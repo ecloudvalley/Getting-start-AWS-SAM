@@ -4,7 +4,7 @@ import json
 def lambda2_handler(event, context):
     db_client = boto3.client('dynamodb')
     resp = db_client.scan(
-        TableName = 'user'
+        TableName = '<YOUR_TABLE_NAME>'
     )
     print(resp)
     print('hello')
