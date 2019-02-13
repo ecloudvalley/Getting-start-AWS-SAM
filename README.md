@@ -4,7 +4,7 @@
 
 Serverless architecture is the way to build and run application without managing the infrastructure that enable you to build applications with increased agility and lower total cost of ownership. This reduced overhead lets developers reclaim time and energy that can be spent on developing great products which scale and that are reliable.
 
-A serverless application is a combination of Lambda functions, event sources, and other resources that work together to perform tasks. **AWS Serverless Application Model** (AWS SAM) is an open-source framework that you can use to build serverless applications on AWS.
+A serverless application is a combination of Lambda functions, event sources, and other resources that work together to perform tasks. [**AWS Serverless Application Model**](https://docs.aws.amazon.com/zh_tw/lambda/latest/dg/serverless_app.html) (AWS SAM) is an open-source framework that you can use to build serverless applications on AWS.
 
 **AWS SAM** consists of the following components:
 
@@ -13,7 +13,7 @@ A serverless application is a combination of Lambda functions, event sources, an
 
 ## **Scenario**
 
-In this lab, you will use **AWS SAM** to build a simple serverless web application. With Amazon **Cloud9** as a development environment, define the resources required by application through AWS SAM template specification. Finally, deploy and test your application using **AWS SAM CLI**. This application can write data to **DynamoDB** table and read the data from it to the web page.
+In this lab, you will use **AWS SAM** to build a simple serverless web application. With Amazon [**Cloud9**](https://aws.amazon.com/tw/cloud9/) as a development environment, define the resources required by application through AWS SAM template specification. Finally, deploy and test your application using **AWS SAM CLI**. This application can write data to [**DynamoDB**](https://aws.amazon.com/tw/dynamodb/) table and read the data from it to the web page.
 
 <p align="center">
     <img src="images/001-SAM-Architecture.jpg" width="70%" height="70%">
@@ -109,7 +109,7 @@ $ sam build --use-container
 
 > Note: The dependencies are described in the **~/environment/aws-serverless-application-model/Lambda/requirement.txt** file.
 
-- Type the following command in terminal to create **S3 Bucket**. Please replace "<YOUR_BUCKET_NAME>" with unique name.
+- Type the following command in terminal to create **[S3](https://aws.amazon.com/tw/s3/) Bucket**. Please replace "<YOUR_BUCKET_NAME>" with unique name.
 
 ```
 aws s3 mb s3://<YOUR_BUCKET_NAME>
