@@ -247,10 +247,10 @@ Congratulations! Now you've learned: <br />
 
 4. Integrate **endpoint** with web page and create a static website hosting through **S3**.
 
-## **Clean up**
+<!-- ## **Clean up**
 
 1. Delete your environment in **Cloud9**.
 
 2. In **CloudFormation**, choose your stackm and then delete it.
 
-3. In **S3**, delete your bucket.
+3. In **S3**, delete your bucket. -->
