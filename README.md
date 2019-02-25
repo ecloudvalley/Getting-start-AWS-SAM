@@ -13,7 +13,7 @@ A serverless application is a combination of Lambda functions, event sources, an
 
 ## **Scenario**
 
-In this lab, you will use **AWS SAM** to build a simple serverless web application. With Amazon [**Cloud9**](https://aws.amazon.com/tw/cloud9/) as a development environment, define the resources required by application through AWS SAM template specification. Finally, deploy and test your application using **AWS SAM CLI**. This application can write data to [**DynamoDB**](https://aws.amazon.com/tw/dynamodb/) table and read the data from it to the web page.
+In this lab, you will use **AWS SAM** to build a simple serverless web application. With Amazon [**Cloud9**](https://aws.amazon.com/tw/cloud9/) as a development environment, define the resources required by application through AWS SAM template specification. Finally, deploy and test your application using **AWS SAM CLI**. This application can write data to [**DynamoDB**](https://aws.amazon.com/tw/dynamodb/) table and read the data from it to the web page.
 
 <p align="center">
     <img src="images/001-SAM-Architecture.jpg" width="70%" height="70%">
