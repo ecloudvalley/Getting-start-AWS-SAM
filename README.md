@@ -13,7 +13,7 @@ A serverless application is a combination of Lambda functions, event sources, an
 
 ## **Scenario**
 
-In this lab, you will use **AWS SAM** to build a simple serverless web application. With Amazon [**Cloud9**](https://aws.amazon.com/tw/cloud9/) as a development environment, define the resources required by application through AWS SAM template specification. Finally, deploy and test your application using **AWS SAM CLI**. This application can write data to [**DynamoDB**](https://aws.amazon.com/tw/dynamodb/) table and read the data from it to the web page.
+In this lab, you will use **AWS SAM** to build a simple serverless web application. With Amazon [**Cloud9**](https://aws.amazon.com/tw/cloud9/) as a development environment, define the resources required by application through AWS SAM template specification. Finally, deploy and test your application using **AWS SAM CLI**. This application can write data to [**DynamoDB**](https://aws.amazon.com/tw/dynamodb/) table and read the data from it to the web page.
 
 <p align="center">
     <img src="images/001-SAM-Architecture.jpg" width="70%" height="70%">
@@ -21,7 +21,7 @@ In this lab, you will use **AWS SAM** to build a simple serverless web applicati
 
 ## **Step by Step**
 
-In the following steps, you will configure the environment required for development, deploy the application and finally test it!
+In the following steps, you will configure the environment required for development, deploy the application and finally test it!
 
 ### **Create Cloud9 environment**
 
@@ -69,7 +69,7 @@ $ cd ~/environment/aws-serverless-application-model
 $ cat template.yaml
 ```
 
-> In this code, we define two Lambda Function **PostItemFunction** and **GetItemFunction**. In addition, we also defined a **DynamoDB table** to store our user's information.
+> In this code, we define two Lambda Function **PostItemFunction** and **GetItemFunction**. In addition, we also defined a **DynamoDB table** to store our user's information.
 
 - Now, we will change the table name which defined in the code.
 
@@ -214,8 +214,7 @@ You will setup static web hosting in **S3**.
 - Reture to the previous page.
 
 <p align="center">
-    <img src="images/010-SAM-S3WebHosting-01.png
-" width="50%" height="90%">
+    <img src="images/010-SAM-S3WebHosting-01.png" width="50%" height="90%">
 </p>
 
 - Select **Properties** tab.
@@ -225,26 +224,23 @@ You will setup static web hosting in **S3**.
 - Type **index.html** for **Index document** field.
 
 <p align="center">
-    <img src="images/013-SAM-S3WebHosting-02.png
-" width="50%" height="90%">
+    <img src="images/013-SAM-S3WebHosting-02.png" width="50%" height="90%">
 </p>
 
 - Copy the **endpoint** on the top of window to the textbook.
 
 - Choose **Save**.
 
-- At last, paste the endpoint to your browser. You will see the website as bellow:
+- At last, paste the endpoint to your browser. You will see the website as bellow:
 
 <p align="center">
-    <img src="images/014-SAM-Website.png
-" width="70%" height="70%">
+    <img src="images/014-SAM-Website.png" width="70%" height="70%">
 </p>
 
 - Now, you can type data in the fields of **User Name**, **Address**, **Phone** and press the button **"Submit"**. The data will be written to **DynamoDB** table. Press the button **"Retrieve"** to list all the data from **DynamoDB**.
 
 <p align="center">
-    <img src="images/024-SAM-FinalResult.png
-" width="70%" height="70%">
+    <img src="images/024-SAM-FinalResult.png" width="70%" height="70%">
 </p>
 
 ## **Conclusion**
