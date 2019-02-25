@@ -215,7 +215,7 @@ You will setup static web hosting in **S3**.
 
 <p align="center">
     <img src="images/010-SAM-S3WebHosting-01.png
-" width="70%" height="70%">
+" width="50%" height="90%">
 </p>
 
 - Select **Properties** tab.
@@ -226,7 +226,7 @@ You will setup static web hosting in **S3**.
 
 <p align="center">
     <img src="images/013-SAM-S3WebHosting-02.png
-" width="70%" height="70%">
+" width="50%" height="90%">
 </p>
 
 - Copy the **endpoint** on the top of window to the textbook.
