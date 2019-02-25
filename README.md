@@ -58,7 +58,7 @@ We clone the source code and modify it.
 - In **Cloud9** terminal that was opened from the previous step, type the following command to clone the lab source.
 
 ```
-$ git clone https://gitlab.com/ecloudture/blog/aws-serverless-application-model.git
+$ git clone https://github.com/ecloudvalley/Getting-start-AWS-SAM.git
 ```
 
 - Type the following command to view the content of the file **template.yaml**. We use the yaml syntax to define our resources
