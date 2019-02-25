@@ -173,6 +173,8 @@ You will create a static website on **S3** and integrate the API endpoint with i
     <img src="images/008-SAM-PastePost&GetUrL.png" width="70%" height="70%">
 </p>
 
+> This step will allow the web page to call **Lambda Function** through the API.
+
 - Save the file **index.html**.
 
 - In the Cloud9 terminal, type the following command. Please replace `<YOUR_BUCKET_NAME>` with your bucket name which created in the previous step.

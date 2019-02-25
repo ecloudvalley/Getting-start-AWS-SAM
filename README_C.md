@@ -176,6 +176,8 @@ $ sam deploy --template-file package.yaml --stack-name <YOUR_STACK_NAME> --capab
     <img src="images/008-SAM-PastePost&GetUrL.png" width="70%" height="70%">
 </p>
 
+> 這個步驟讓網頁得以透過API呼叫**Lambda Function**。
+
 - 儲存檔案**index.html**
 
 - 於**Cloud9**的終端機上，請取代下列指令中的`<YOUR_BUCKET_NAME>`為自己的**Bucket**名字，並輸入指令至終端機：
