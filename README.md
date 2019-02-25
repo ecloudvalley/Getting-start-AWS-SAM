@@ -75,9 +75,15 @@ $ cat template.yaml
 
 - Open the file **Lambda1.py** and **Lambda2.py** which under the path **serverless-application-model/Lambda/**.
 
+```
+Lambda1.py will write data to the database.
+Lambda2.py will scan all data from the database.
+template.yaml define DynamoDB table.
+```
+
 - Open the file **template.yaml** which under the folder **serverless-application-model**.
 
-- Replace the string "<YOUR_TABLE_NAME>" with your table name, you can name it by yourself as blow:
+- Replace the string `<YOUR_TABLE_NAME>` with unique table name, you can name it by yourself as blow:
 
     - Lambda1.py
 
@@ -111,7 +117,7 @@ $ sam build --use-container
 
 > Note: The dependencies are described in the **~/environment/aws-serverless-application-model/Lambda/requirement.txt** file.
 
-- Type the following command in terminal to create **[S3](https://aws.amazon.com/tw/s3/) Bucket**. Please replace "<YOUR_BUCKET_NAME>" with unique name.
+- Type the following command in terminal to create **[S3](https://aws.amazon.com/tw/s3/) Bucket**. Please replace `<YOUR_BUCKET_NAME>` with unique name.
 
 ```
 aws s3 mb s3://<YOUR_BUCKET_NAME>
@@ -119,7 +125,7 @@ aws s3 mb s3://<YOUR_BUCKET_NAME>
 
 > In order to store the packages needed for deployment and host our static website, we create a **S3 Bucket**. 
 
-- Type the command in terminal, then the file **package.yaml** will be created under the "aws-serverless-application-model" folder. Please replace "<YOUR_BUCKET_NAME>" with your bucket name which created in the previous step.
+- Type the command in terminal, then the file **package.yaml** will be created under the "aws-serverless-application-model" folder. Please replace `<YOUR_BUCKET_NAME>` with your bucket name which created in the previous step.
 
 ```
 $ sam package --output-template-file package.yaml --s3-bucket <YOUR_BUCKET_NAME>
@@ -127,7 +133,7 @@ $ sam package --output-template-file package.yaml --s3-bucket <YOUR_BUCKET_NAME>
 
 > We create the deployment package to **S3** which needed for deploy our web application.
 
-- Now, we use the **deploy** command. Type the command below. Please replace "<YOUR_STACK_NAME>" with your stack name, you can name it yourself.
+- Now, we use the **deploy** command. Type the command below. Please replace `<YOUR_STACK_NAME>` with your stack name, you can name it yourself.
 
 ```
 $ sam deploy --template-file package.yaml --stack-name <YOUR_STACK_NAME> --capabilities CAPABILITY_IAM --region us-east-1
@@ -151,7 +157,7 @@ You will create a static website on **S3** and integrate the API endpoint with i
     <img src="images/006-SAM-CloudFormationFilter.png" width="70%" height="70%">
 </p>
 
-- As you can see, your stack is already in the status of "CREATE_COMPLETE".
+- As you can see, your stack is already in the status of CREATE_COMPLETE.
 
 - Select the **Outputs** section. You can find the **GetItemApi** and **PostItemApi**, copy the value of these key to the textbook.
 
@@ -161,7 +167,7 @@ You will create a static website on **S3** and integrate the API endpoint with i
 
 - In Cloud9, open the file **index.html** under the folder **aws-serverless-application-model**.
 
-- In the bottom half of the **index.html**, replace "<EDNPOINT_FOR_POST_ITEM>" and "<ENDPOINT_FOR_GET_ITEM>" with the value of **PostItemApi** and **GetItemApi** respectively.
+- In the bottom half of the **index.html**, replace `<EDNPOINT_FOR_POST_ITEM>` and `<ENDPOINT_FOR_GET_ITEM>` with the value of **PostItemApi** and **GetItemApi** respectively.
 
 <p align="center">
     <img src="images/008-SAM-PastePost&GetUrL.png" width="70%" height="70%">
@@ -169,7 +175,7 @@ You will create a static website on **S3** and integrate the API endpoint with i
 
 - Save the file **index.html**.
 
-- In the Cloud9 terminal, type the following command. Please replace "<YOUR_BUCKET_NAME>" with your bucket name which created in the previous step.
+- In the Cloud9 terminal, type the following command. Please replace `<YOUR_BUCKET_NAME>` with your bucket name which created in the previous step.
 
 ```
 $ aws s3 cp ~/environment/aws-serverless-application-model/index.html s3://<YOUR_BUCKET_NAME>
@@ -250,6 +256,8 @@ Congratulations! Now you've learned: <br />
 3. Deploy your application to **AWS Cloud** using command.
 
 4. Integrate **endpoint** with web page and create a static website hosting through **S3**.
+
+You built a serverless web application using the above skills. This will allow you to test and deploy your application faster. In addition, serverless architecture will help you reduce costs because you only pay for what you use.
 
 <!-- ## **Clean up**
 

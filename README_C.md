@@ -80,7 +80,13 @@ $ cat template.yaml
 
 - 請開啟位於目錄**serverless-application-model**底下的檔案**template.yaml**。
 
-- 請取代上述三個檔案內的字串"<YOUR_TABLE_NAME>"為資料表名稱，名稱可自行命名，取代位置如下圖所示：
+```
+Lambda1.py 會將資料寫進資料庫；
+Lambda2.py 會從資料庫讀取所有資料；
+template.py 定義了DyanmoDB的資料表。
+```
+
+- 請取代上述三個檔案內的字串`<YOUR_TABLE_NAME>`為資料表名稱，名稱可自行命名，取代位置如下圖所示：
 
     - Lambda1.py
     
@@ -114,7 +120,7 @@ $ sam build --use-container
 
 > 要安裝的相依套件被設置在目錄 ~/environment/aws-serverless-application-model/Lambda 底下的檔案requirement.txt。
 
-- 輸入下列指令新增**S3 Bucket**，請替換指令中的"<YOUR_BUCKET_NAME>"為自己的Bucket名字，名字不得重複。
+- 輸入下列指令新增**S3 Bucket**，請替換指令中的`<YOUR_BUCKET_NAME>`為自己的Bucket名字，名字不得重複。
 
 ```
 aws s3 mb s3://<YOUR_BUCKET_NAME>
@@ -122,7 +128,7 @@ aws s3 mb s3://<YOUR_BUCKET_NAME>
 
 > **S3 Bucket**將被用來放置靜態網頁以及部署應用程式所需的套件。
 
-- 輸入下列指令建立部署應用程式所需的套件，請將指令中的"<YOUR_BUCKET_NAME>"替換為上一步所新增的Bucket名字。
+- 輸入下列指令建立部署應用程式所需的套件，請將指令中的`<YOUR_BUCKET_NAME>`替換為上一步所新增的Bucket名字。
 
 ```
 $ sam package --output-template-file package.yaml --s3-bucket <YOUR_BUCKET_NAME>
@@ -130,7 +136,7 @@ $ sam package --output-template-file package.yaml --s3-bucket <YOUR_BUCKET_NAME>
 
 > 輸入指令後，**package.yaml**會被新增至"aws-serverless-application-model"資料夾底下。
 
-- 請輸入下列指令，**Cloudformation**會依據定義在template的內容建立資源。請將指令中的"<YOUR_BUCKET_NAME>"替換為自己的Bucket名字。
+- 請輸入下列指令，**Cloudformation**會依據定義在template的內容建立資源。請將指令中的`<YOUR_BUCKET_NAME>`替換為自己的Bucket名字。
 
 ```
 $ sam deploy --template-file package.yaml --stack-name <YOUR_STACK_NAME> --capabilities CAPABILITY_IAM --region us-east-1
@@ -164,7 +170,7 @@ $ sam deploy --template-file package.yaml --stack-name <YOUR_STACK_NAME> --capab
 
 - 在**Cloud9**中，打開檔案**index.html**，該檔案位於**aws-serverless-application-model**資料夾底下。
 
-- 在下半部的程式碼，請取代"<EDNPOINT_FOR_POST_ITEM>"為**PostItemApi**的值；以及取代"<ENDPOINT_FOR_GET_ITEM>"為**GetItemApi**的值，如下圖所示：
+- 在下半部的程式碼，請取代`<EDNPOINT_FOR_POST_ITEM>`為**PostItemApi**的值；以及取代`<ENDPOINT_FOR_GET_ITEM>`為**GetItemApi**的值，如下圖所示：
 
 <p align="center">
     <img src="images/008-SAM-PastePost&GetUrL.png" width="70%" height="70%">
@@ -172,7 +178,7 @@ $ sam deploy --template-file package.yaml --stack-name <YOUR_STACK_NAME> --capab
 
 - 儲存檔案**index.html**
 
-- 於**Cloud9**的終端機上，請取代下列指令中的"<YOUR_BUCKET_NAME>"為自己的**Bucket**名字，並輸入指令至終端機：
+- 於**Cloud9**的終端機上，請取代下列指令中的`<YOUR_BUCKET_NAME>`為自己的**Bucket**名字，並輸入指令至終端機：
 
 ```
 $ aws s3 cp ~/environment/aws-serverless-application-model/index.html s3://<YOUR_BUCKET_NAME>
@@ -251,3 +257,5 @@ $ aws s3 cp ~/environment/aws-serverless-application-model/index.html s3://<YOUR
 3. 利用指令將應用程式部署至**AWS Cloud**；
 
 4. 將**endpoint**整合進網頁，並使用**S3**建立靜態網站。
+
+您使用上述方式建立無伺服器的網頁應用程式，讓您可更快速地進行測試與部署。此外，無伺服器的架構將可協助您降低執行所需的成本，您只需支付程式執行所需的費用。
