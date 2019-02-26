@@ -75,11 +75,7 @@ $ cat template.yaml
 
 - Open the file **Lambda1.py** and **Lambda2.py** which under the path **serverless-application-model/Lambda/**.
 
-```
-Lambda1.py will write data to the database.
-Lambda2.py will scan all data from the database.
-template.yaml define DynamoDB table.
-```
+> Lambda1.py will write data to the database.<br />Lambda2.py will scan all data from the database.<br />template.yaml define DynamoDB table.
 
 - Open the file **template.yaml** which under the folder **serverless-application-model**.
 
