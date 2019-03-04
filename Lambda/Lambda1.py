@@ -20,7 +20,7 @@ def lambda1_handler(event, context):
     return {
         'statusCode': 200,
         "headers": {
-            "Access-Control-Allow-Origin" : "*", # Required for CORS support to work
+            "Access-Control-Allow-Origin" : "*", # Required for CORS support to work.
             "Access-Control-Allow-Credentials" : True # Required for cookies, authorization headers with HTTPS 
         },
         "body": json.dumps(
